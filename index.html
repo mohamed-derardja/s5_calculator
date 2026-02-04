@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security - Semester 5 GPA Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Semester 5 GPA Calculator</h1>
+            <p>Cyber Security (3rd Year)</p>
+        </header>
+
+        <form id="gpaForm">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Module</th>
+                            <th>Coeff</th>
+                            <th>Controle (60% or 50%)</th>
+                            <th>TD (40% or 50%)</th>
+                            <th>TP (40% or 50%)</th>
+                            <th>Moyenne</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 1. Cryptography -->
+                        <tr>
+                            <td>Cryptography</td>
+                            <td>4</td>
+                            <td><input type="number" id="crypto_exam" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="crypto_td" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="crypto_tp" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="crypto_avg" class="avg-input" placeholder="--" readonly></td>
+                        </tr>
+
+                        <!-- 2. Operational Research -->
+                        <tr>
+                            <td>Operational Research</td>
+                            <td>4</td>
+                            <td><input type="number" id="op_exam" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="op_td" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="op_tp" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="op_avg" class="avg-input" placeholder="--" readonly></td>
+                        </tr>
+
+                        <!-- 3. Compilation -->
+                        <tr>
+                            <td>Compilation</td>
+                            <td>4</td>
+                            <td><input type="number" id="comp_exam" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="comp_td" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="comp_tp" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="comp_avg" class="avg-input" placeholder="--" readonly></td>
+                        </tr>
+
+                        <!-- 4. Software Engineering -->
+                        <tr>
+                            <td>Software Engineering</td>
+                            <td>2</td>
+                            <td><input type="number" id="soft_exam" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="soft_td" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td class="disabled-cell">--</td>
+                            <td><input type="number" id="soft_avg" class="avg-input" placeholder="--" readonly></td>
+                        </tr>
+
+                        <!-- 5. Python -->
+                        <tr>
+                            <td>Python</td>
+                            <td>2</td>
+                            <td><input type="number" id="python_exam" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td class="disabled-cell">--</td>
+                            <td><input type="number" id="python_tp" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="python_avg" class="avg-input" placeholder="--" readonly></td>
+                        </tr>
+
+                        <!-- 6. Web Development -->
+                        <tr>
+                            <td>Web Development</td>
+                            <td>2</td>
+                            <td><input type="number" id="web_exam" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td class="disabled-cell">--</td>
+                            <td><input type="number" id="web_tp" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="web_avg" class="avg-input" placeholder="--" readonly></td>
+                        </tr>
+
+                        <!-- 7. Theory of Coding -->
+                        <tr>
+                            <td>
+                                Theory of Coding<br>
+                                <label class="checkbox-small">
+                                    <input type="checkbox" id="toc_include_td" checked> With TD
+                                </label>
+                            </td>
+                            <td>1</td>
+                            <td><input type="number" id="toc_exam" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td><input type="number" id="toc_td" min="0" max="20" step="0.01" class="grade-input"></td>
+                            <td class="disabled-cell">--</td>
+                            <td><input type="number" id="toc_avg" class="avg-input" placeholder="--" readonly></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+        <div class="calculator-actions">
+            <button type="button" onclick="calculateGPA()" class="btn-calculate">Calculate Average</button>
+            <button type="button" onclick="resetForm()" class="btn-reset">Reset</button>
+        </div>
+
+        <div id="final-result" class="result-display hidden">
+            <h2>Semester General Average</h2>
+            <div class="grade-circle">
+                <span id="final_gpa">0.00</span>
+            </div>
+            <p id="grade_message"></p>
+
+            <div class="calculation-details">
+                <h3>How is this calculated?</h3>
+                <p><strong>1. Module Averages:</strong></p>
+                <ul>
+                    <li><span class="detail-label">Crypto, Op. Research, Compilation:</span> <br><code>(Exam × 0.5) + [((TD + TP) / 2) × 0.5]</code></li>
+                    <li><span class="detail-label">Software Eng, Theory (with TD):</span> <br><code>(Exam × 0.6) + (TD × 0.4)</code></li>
+                    <li><span class="detail-label">Python, Web Dev:</span> <br><code>(Exam × 0.6) + (TP × 0.4)</code></li>
+                    <li><span class="detail-label">Theory (Exam Only):</span> <br><code>Exam × 1.0</code></li>
+                </ul>
+                <p><strong>2. Final GPA:</strong></p>
+                <p>The sum of <code>(Module Average × Coefficient)</code> divided by the Total Coefficients (19).</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Made by Mohamed Derardja</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

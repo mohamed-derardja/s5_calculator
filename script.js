@@ -147,6 +147,10 @@ function calculateGPA() {
     totalScore += toc_avg * 1;
     totalCoeffs += 1;
 
+    // 8. Business Intelligence (Coeff 1)
+    totalScore += processModule('bi', 3, 1);
+    totalCoeffs += 1;
+
     // Final Calculation
     const finalGpa = totalScore / totalCoeffs;
     const finalDisplay = document.getElementById('final_gpa');
